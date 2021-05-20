@@ -1,0 +1,21 @@
+\selectlanguage *{catalan}
+\selectlanguage *{catalan}
+\contentsline {section}{\numberline {1}Funcionament algorisme}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Primera idea: Backtracking}{4}{subsection.1.1}%
+\contentsline {subsubsection}{\numberline {1.1.1}Per què no utilitzar Backtracking en aquest cas}{4}{subsubsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.2}Alternativa a backtracking: Principi d'optimitat}{5}{subsection.1.2}%
+\contentsline {subsubsection}{\numberline {1.2.1}Aplicació i funcionament en el nostre cas d'ús}{5}{subsubsection.1.2.1}%
+\contentsline {subsubsection}{\numberline {1.2.2}Demostració per reducció al absurd}{10}{subsubsection.1.2.2}%
+\contentsline {subsubsection}{\numberline {1.2.3}Especificació formal}{11}{subsubsection.1.2.3}%
+\contentsline {subsubsection}{\numberline {1.2.4}Formula algorisme}{11}{subsubsection.1.2.4}%
+\contentsline {section}{\numberline {2}Cost algorisme}{12}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Iteratiu}{12}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Recursiu}{12}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Empíric}{12}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Problemes al realitzar la pràctica}{13}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Nombres en \cpluspluslogo }{13}{subsection.3.1}%
+\contentsline {section}{\numberline {4}Consideracions}{14}{section.4}%
+\contentsline {section}{\numberline {5}Conclusions}{14}{section.5}%
+\contentsline {section}{Apèndix A: Pseudocodi algorisme iteratiu}{15}{section*.4}%
+\contentsline {section}{Apèndix B: Pseudocodi algorisme recursiu}{15}{section*.5}%
+\contentsline {section}{Apèndix C: Repositori github}{16}{section*.6}%

@@ -1,0 +1,16 @@
+\selectlanguage *{catalan}
+\selectlanguage *{catalan}
+\contentsline {figure}{\numberline {1}{\ignorespaces Exemple backtracking}}{4}{figure.1}%
+\contentsline {figure}{\numberline {2}{\ignorespaces Entrada exemple}}{5}{figure.2}%
+\contentsline {figure}{\numberline {3}{\ignorespaces Exemple representat eix de coordenades}}{6}{figure.3}%
+\contentsline {figure}{\numberline {4}{\ignorespaces Exemple representat en forma de dígraf}}{7}{figure.4}%
+\contentsline {figure}{\numberline {5}{\ignorespaces resultat de $f(E)$}}{7}{figure.5}%
+\contentsline {figure}{\numberline {6}{\ignorespaces resultat de $f(D)$}}{8}{figure.6}%
+\contentsline {figure}{\numberline {7}{\ignorespaces resultat de $f(C)$}}{8}{figure.7}%
+\contentsline {figure}{\numberline {8}{\ignorespaces resultat de $f(B)$}}{9}{figure.8}%
+\contentsline {figure}{\numberline {9}{\ignorespaces resultat del aqüeducte mínim ($f(A)$)}}{9}{figure.9}%
+\contentsline {figure}{\numberline {10}{\ignorespaces Aqüeducte de punt A a punt J}}{10}{figure.10}%
+\contentsline {figure}{\numberline {11}{\ignorespaces Aqüeducte de punt A a punt J passant per K}}{10}{figure.11}%
+\contentsline {figure}{\numberline {12}{\ignorespaces Graf que representa un possible R'\textsubscript {a...k}}}{10}{figure.12}%
+\contentsline {figure}{\numberline {13}{\ignorespaces Cost empíric en Python}}{12}{figure.13}%
+\contentsline {figure}{\numberline {14}{\ignorespaces Cost empíric en \cpluspluslogo }}{13}{figure.14}%
