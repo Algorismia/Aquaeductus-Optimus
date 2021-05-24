@@ -94,22 +94,23 @@ class Land:
         minimum_point = None
         for i in range(current_point + 1, self.num_points, 1):
             if self.valid_arch(current_point, i):
-                cost = self.cost_support(self.points[current_point]) + self.cost_arch(self.points[current_point], self.points[i])
+                cost = self.cost_support(self.points[current_point]) +\
+                       self.cost_arch(self.points[current_point], self.points[i])
                 if cost < minimum:
                     minimum = cost
                     minimum_point = i
         if minimum == math.inf:
             return math.inf
-        return cost + self.get_minimum_aqueduct(minimum_point)
+        return minimum + self.get_minimum_aqueduct(minimum_point)
 
 
 def get_land_from_file(my_file) -> Land:
-        lines = my_file.readlines()
-        num_points, max_height, alpha, beta = lines[0].split(" ")
-        land = Land(num_points, max_height, alpha, beta)
-        add_points_to_land(land, lines[1:])
-        my_file.close()
-        return land
+    lines = my_file.readlines()
+    num_points, max_height, alpha, beta = lines[0].split(" ")
+    land = Land(num_points, max_height, alpha, beta)
+    add_points_to_land(land, lines[1:])
+    my_file.close()
+    return land
 
 
 def add_points_to_land(land: Land, points: list):
