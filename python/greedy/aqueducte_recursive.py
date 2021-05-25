@@ -85,19 +85,18 @@ class Land:
     # algorithm
 
     def get_minimum_aqueduct(self, current_point=0):
-        acc = 0
-        while current_point != self.num_points - 1:
-            minimum, minimum_point = math.inf, None
-            for i in range(current_point + 1, self.num_points, 1):
-                if self.valid_arch(current_point, i):
-                    cost = self.total_cost(current_point, i)
-                    if cost < minimum:
-                        minimum, minimum_point = cost, i
-            if minimum == math.inf:
-                return math.inf
-            acc += minimum - self.cost_support(self.points[minimum_point])
-            current_point = minimum_point
-        return acc + self.cost_support(self.points[current_point])
+        if current_point == self.num_points - 1:
+            return self.cost_support(self.points[current_point])
+        minimum, minimum_point = math.inf, None
+        for i in range(current_point + 1, self.num_points, 1):
+            if self.valid_arch(current_point, i):
+                cost = self.total_cost(current_point, i)
+                if cost < minimum:
+                    minimum, minimum_point = cost, i
+        if minimum == math.inf:
+            return math.inf
+        return minimum - self.cost_support(self.points[minimum_point]) +\
+               self.get_minimum_aqueduct(minimum_point)
 
 
 def get_land_from_file(my_file) -> Land:
