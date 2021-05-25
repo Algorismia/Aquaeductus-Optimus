@@ -49,7 +49,6 @@ class Land:
         self.alpha = int(alpha)
         self.beta = int(beta)
         self.points = []
-        self.point_values_buffer = [None] * self.num_points
 
     def add_point_to_land(self, x_coord: int, y_coord: int):
         self.points.append(Point(x_coord, y_coord))
@@ -65,10 +64,8 @@ class Land:
     def total_cost(self, first_point_index: int, second_point_index: int):
         cost_first_point = self.cost_support(self.points[first_point_index])
         cost_arch = self.cost_arch(self.points[first_point_index], self.points[second_point_index])
-        cost_second_point = self.point_values_buffer[second_point_index]
-        if cost_second_point:
-            return cost_first_point + cost_arch + cost_second_point
-        return cost_first_point + cost_arch + self.cost_support(self.points[second_point_index])
+        cost_second_point = self.cost_support(self.points[second_point_index])
+        return cost_first_point + cost_arch + cost_second_point
 
     # validity of arch
 
@@ -95,24 +92,24 @@ class Land:
         if current_point_index + 1 == self.num_points:
             return self.cost_support(self.points[current_point_index])
         # backtrack
-        min = math.inf
+        min_cost = math.inf
         for i in range(current_point_index + 1, self.num_points):
             if self.valid_arch(current_point_index, i):
                 cost_previous = self.get_minimum_aqueduct(i)
                 cost_previous += self.cost_support(self.points[current_point_index])
                 cost_previous += self.cost_arch(self.points[current_point_index], self.points[i])
-                if cost_previous < min:
-                    min = cost_previous
-        return min
+                if cost_previous < min_cost:
+                    min_cost = cost_previous
+        return min_cost
 
 
 def get_land_from_file(my_file) -> Land:
-        lines = my_file.readlines()
-        num_points, max_height, alpha, beta = lines[0].split(" ")
-        land = Land(num_points, max_height, alpha, beta)
-        add_points_to_land(land, lines[1:])
-        my_file.close()
-        return land
+    lines = my_file.readlines()
+    num_points, max_height, alpha, beta = lines[0].split(" ")
+    land = Land(num_points, max_height, alpha, beta)
+    add_points_to_land(land, lines[1:])
+    my_file.close()
+    return land
 
 
 def add_points_to_land(land: Land, points: list):
