@@ -49,7 +49,6 @@ class Land:
         self.alpha = int(alpha)
         self.beta = int(beta)
         self.points = []
-        self.point_values_buffer = [None] * self.num_points
 
     def add_point_to_land(self, x_coord: int, y_coord: int):
         self.points.append(Point(x_coord, y_coord))
@@ -65,10 +64,8 @@ class Land:
     def total_cost(self, first_point_index: int, second_point_index: int):
         cost_first_point = self.cost_support(self.points[first_point_index])
         cost_arch = self.cost_arch(self.points[first_point_index], self.points[second_point_index])
-        cost_second_point = self.point_values_buffer[second_point_index]
-        if cost_second_point:
-            return cost_first_point + cost_arch + cost_second_point
-        return cost_first_point + cost_arch + self.cost_support(self.points[second_point_index])
+        cost_second_point = self.cost_support(self.points[second_point_index])
+        return cost_first_point + cost_arch + cost_second_point
 
     # validity of arch
 
@@ -90,14 +87,12 @@ class Land:
     def get_minimum_aqueduct(self, current_point=0):
         if current_point == self.num_points - 1:
             return self.cost_support(self.points[current_point])
-        minimum = math.inf
-        minimum_point = None
+        minimum, minimum_point = math.inf, None
         for i in range(current_point + 1, self.num_points, 1):
             if self.valid_arch(current_point, i):
                 cost = self.total_cost(current_point, i)
                 if cost < minimum:
-                    minimum = cost
-                    minimum_point = i
+                    minimum, minimum_point = cost, i
         if minimum == math.inf:
             return math.inf
         return minimum - self.cost_support(self.points[minimum_point]) +\
