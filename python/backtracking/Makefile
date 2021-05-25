@@ -1,5 +1,5 @@
-test := ../../test
-interpreter=pypy3
+test := ../../test/backtracking
+interpreter=python3
 
 all: test
 
@@ -7,13 +7,11 @@ all: test
 pylint:
 	pylint --disable=missing-docstring aqueducte.py
 
-iterative:
-	for t in $(test)/*.in; do $(interpreter) aqueducte.py $$t > sortida; diff -q -w $(test)/`basename $$t .in`.ans sortida; done
-
 recursive:
-	for t in $(test)/*.in; do $(interpreter) aqueducte_recursive.py $$t > sortidarec; diff -q -w $(test)/`basename $$t .in`.ans sortidarec; done
+	for t in $(test)/*.in; do $(interpreter) aqueducte.py $$t > sortida; diff -q -w $(test)/`basename $$t .in`.ans sortida; done
+	rm sortida
 
-test: iterative pylint
+test: recursive pylint
 
 clean:
 	rm -rf sortida sortidarec

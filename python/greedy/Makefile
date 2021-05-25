@@ -1,5 +1,5 @@
-test := ../../test-greedy
-interpreter=pypy3
+test := ../../test/greedy
+interpreter=python3
 
 all: test
 
@@ -9,9 +9,7 @@ pylint:
 
 recursive:
 	for t in $(test)/*.in; do $(interpreter) aqueducte.py $$t > sortida; diff -q -w $(test)/`basename $$t .in`.ans sortida; done
-
-create-tests:
-	for t in $(test)/*.in; do $(interpreter) aqueducte.py $$t > $(test)/`basename $$t .in`.ans; done
+	rm sortida
 
 test: recursive pylint
 
