@@ -63,8 +63,8 @@ class Context {
       int index;
       EntryPoint entry;
       int next_index;
-      int actual_min;
-      int min_cost;
+      long long int actual_min;
+      long long int min_cost;
 
     Context(int index, EntryPoint entry) {
         this->index = index;
@@ -144,22 +144,22 @@ class Land {
                     return_ = cost_support(points[current.index]);
                 } else {
                     current.entry = RESUME;
-                    my_stack.push(current);
                     if (valid_arch(current.index, current.next_index)) {
                         current.actual_min = cost_arch(points[current.index], points[current.next_index]) + cost_support(points[current.index]); 
+                        my_stack.push(current);
                         my_stack.push(Context(current.next_index, CALL));
                     } else {
+                        my_stack.push(current);
                         return_ = IMPOSSIBLE;
                     }
                 }
             } else {
-                cout << "current is" << current.entry << " and actual min" << current.actual_min << " and min cost" << current.min_cost << "and context: "<< current.entry << "and return: " << return_ << "\n";
                 current.next_index += 1;
-                if ((current.actual_min != IMPOSSIBLE && current.actual_min + return_ < current.min_cost) || (current.actual_min != IMPOSSIBLE && current.min_cost == IMPOSSIBLE))
+                if (current.actual_min != IMPOSSIBLE && return_ != IMPOSSIBLE && (current.min_cost == IMPOSSIBLE || (current.actual_min + return_ < current.min_cost))) {
                     current.min_cost = current.actual_min + return_;
-                if (current.next_index == NUM_POINTS)
+                } if (current.next_index == NUM_POINTS) {
                     return_ = current.min_cost;
-                else {
+                } else {
                     current.entry = CALL;
                     my_stack.push(current);
                 }
