@@ -1,27 +1,5 @@
 import sys
 import math
-from enum import Enum
-
-
-class EntryPoint(Enum):
-    CALL = "CALL"
-    RESUME = "RESUME"
-
-
-class Context:
-    def __init__(self, index: int, entry: EntryPoint):
-        self.index = index
-        self.entry = entry
-        self.next_index = index + 1
-        self.actual_min = math.inf
-        self.min_cost = math.inf
-
-    def __str__(self):
-        return f"CONTEXT[index: {self.index}, next_index: {self.next_index}, min_cost = {self.min_cost}]"
-
-    def __repr__(self):
-        return f"CONTEXT[index: {self.index}, next_index: {self.next_index}, min_cost = {self.min_cost}]"
-
 
 class Point:
 
@@ -36,13 +14,13 @@ class Point:
         return second_point.y_coord - self.y_coord
 
     def distance(self, second_point: 'Point') -> float:
-        return math.sqrt(pow(self.x_distance_to(second_point), 2) +
+        return math.sqrt(pow(self.x_distance_to(second_point), 2) + \
                          pow(self.y_distance_to(second_point), 2))
 
 
 class Circumference:
 
-    def __init__(self, point: Point, radius: float):
+    def __init__(self, point: Point, radius: int):
         self.point = point
         self.radius = radius
 
@@ -107,33 +85,22 @@ class Land:
     # algorithm
 
     def get_minimum_aqueduct(self, current_point_index=0):
-        return_ = math.inf
-        my_stack = [Context(current_point_index, EntryPoint.CALL)]
-        while my_stack:
-            current_context = my_stack.pop()
-            if current_context.entry == EntryPoint.CALL:
-                if current_context.index + 1 == self.num_points:
-                    return_ = self.cost_support(self.points[current_context.index])
-                else:
-                    current_context.entry = EntryPoint.RESUME
-                    my_stack.append(current_context)
-                    if self.valid_arch(current_context.index, current_context.next_index):
-                        current_context.actual_min = self.cost_arch(self.points[current_context.index],
-                                                                    self.points[current_context.next_index]) + \
-                                                     self.cost_support(self.points[current_context.index])
-                        my_stack.append(Context(current_context.next_index, EntryPoint.CALL))
-                    else:
-                        return_ = math.inf
-            else:
-                current_context.next_index += 1
-                if current_context.actual_min + return_ < current_context.min_cost:
-                    current_context.min_cost = current_context.actual_min + return_
-                if current_context.next_index == self.num_points:
-                    return_ = current_context.min_cost
-                else:
-                    current_context.entry = EntryPoint.CALL
-                    my_stack.append(current_context)
-        return return_
+        # base case
+        # if current_point_index + 2 == self.num_points:
+        #     if self.valid_arch(current_point_index, current_point_index + 1):
+        #         return self.total_cost(current_point_index, current_point_index + 1)
+        if current_point_index + 1 == self.num_points:
+            return self.cost_support(self.points[current_point_index])
+        # backtrack
+        min_cost = math.inf
+        for i in range(current_point_index + 1, self.num_points):
+            if self.valid_arch(current_point_index, i):
+                cost_previous = self.get_minimum_aqueduct(i)
+                cost_previous += self.cost_support(self.points[current_point_index])
+                cost_previous += self.cost_arch(self.points[current_point_index], self.points[i])
+                if cost_previous < min_cost:
+                    min_cost = cost_previous
+        return min_cost
 
 
 def get_land_from_file(my_file) -> Land:
