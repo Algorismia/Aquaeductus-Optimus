@@ -86,9 +86,6 @@ class Land:
 
     def get_minimum_aqueduct(self, current_point_index=0):
         # base case
-        # if current_point_index + 2 == self.num_points:
-        #     if self.valid_arch(current_point_index, current_point_index + 1):
-        #         return self.total_cost(current_point_index, current_point_index + 1)
         if current_point_index + 1 == self.num_points:
             return self.cost_support(self.points[current_point_index])
         # backtrack

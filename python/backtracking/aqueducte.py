@@ -17,10 +17,10 @@ class Context:
         self.min_cost = math.inf
 
     def __str__(self):
-        return f"CONTEXT[index: {self.index}, next_index: {self.next_index}, min_cost = {self.min_cost}]"
+        return f"[index: {self.index}, min_cost = {self.min_cost}]"
 
     def __repr__(self):
-        return f"CONTEXT[index: {self.index}, next_index: {self.next_index}, min_cost = {self.min_cost}]"
+        return f"[index: {self.index}, min_cost = {self.min_cost}]"
 
 
 class Point:
@@ -119,7 +119,7 @@ class Land:
                     my_stack.append(current_context)
                     if self.valid_arch(current_context.index, current_context.next_index):
                         current_context.actual_min = self.cost_arch(self.points[current_context.index],
-                                                                    self.points[current_context.next_index]) + \
+                                                     self.points[current_context.next_index]) + \
                                                      self.cost_support(self.points[current_context.index])
                         my_stack.append(Context(current_context.next_index, EntryPoint.CALL))
                     else:
