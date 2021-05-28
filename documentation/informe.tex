@@ -51,7 +51,17 @@
 \makeatother
 
 % information
-\title{\textbf{Pràctica 1 || Aquæductus}}
+% information
+\title{%
+    \begin{center}
+	\includegraphics[width=4cm,height=3cm]{udl.png}
+    \end{center}
+    \line(1,0){250}\\[0.3cm]
+    \textbf{Pràctica 2: Aquæductus Optimus}
+    \line(1,0){250}
+    \\[0.5cm]
+	\large Assignatura d'Algorítmica i complexitat del Grau d'Enginyería Informàtica
+}
 \author{Pablo Fraile Alonso}
 \date{\today}
 
@@ -72,11 +82,15 @@
 \listoffigures
 \newpage
 
-% begin contents
-\section{Funcionament algorisme}
+\section{Greedy}
+Un algorisme greedy (o algorisme voraç), segueix l'heurística de resolució de problemes de fer l’elecció local òptima en cada etapa. En aquest cas d'ús, veurem que aquesta no és una solució (real), ja que potser que les solucions locals òptimes, a la llarga no façin el aqueducte amb el cost mínim.
+
+
+
+
 
 % backtracking
-\subsection{Primera idea: Backtracking}
+\section{Backtracking}
 La primera idea que es va provar per solucionar el problema va ser anar provant totes les diferents solucions i quedar-se amb la més òptima. Òbviament, les solucions no vàlides es podien anar descartant per poder estalviar temps. Aquesta tècnica s'anomena backtracking.  Una
 resolució mitjançant backtracking per anar del punt A al punt D on es pot crear arcs entre tots els punts sería la figura \ref{exemple:backtracking}.
 
@@ -111,7 +125,7 @@ El cost que s'ens demanava era de $O(n^{3})$, on n era el nombre de punts del s�
 
 % principi optimitat
 \newpage
-\subsection{Alternativa a backtracking: Principi d'optimitat}
+\section{Dynamic Programming}
 \label{optimal-explanation}
 Abans de poder comentar la solució, hem d'entendre que és el principi d'optimitat: 
 \begin{quote}{Richard E.Bellman} Principi d'optimitat: Una política òptima té la propietat que sigui quin sigui l'estat inicial i la decisió inicial, les decisions restants han de construir una política òptima respecte a l'estat resultat de la primera decisió.
@@ -428,16 +442,16 @@ v(x_{0}) = min(f(x_{0}) + v(x_{1}))
 On $v(x)$ és la fórmula per a calcular el cost mínim del aqüeducte, $x_{0}$ es el primer pilar del aqüeducte i $x_{1}$ es el resultat d'aplicar $v(x)$ al pilar que va desprès de $x_{0}$
 \end{center}
 
-\section{Cost algorisme}
-\subsection{Iteratiu}
+\subsection{Cost algorisme}
+\subsubsection{Iteratiu}
 Veiem que el programa té 3 bucles anidats, i que en el pitjor dels casos (quan estem analitzant el primer punt, $p\textsubscript{0}$) haurem recorregut els tres $n^3$ cops.
 Per tant, podem dir que el cost de l'algorisme en forma iterativa és de $O(n^{3})$.
 
-\subsection{Recursiu}
+\subsubsection{Recursiu}
 Òbviament, si l'únic que hem fet ha sigut passar l'algorisme iteratiu a recursiu, el cost d'aquest continuarà sent el mateix. L'únic que canviarà serà que ara s'utilitzarà memòria de la pila d'execució i no 
 memòria de heap, per tant el programa es més propens a sofrir un \textit{stackoverflow}. Finalment podem dir que el cost és de $O(n^{3})$.
 
-\subsection{Empíric}
+\subsubsection{Empíric}
 \begin{figure}[h!]
     \includegraphics[max size={\textwidth}{\textheight}]{python-benchmarks}
     \centering
@@ -456,36 +470,7 @@ Recalcar que en Python,  es van fer els testos fins N=1450 (figura \ref{fig:pyth
 amb \cpluspluslogo (figura \ref{fig:cpp-benchmark}), si que es van poder fer execucions fins N=5000.\\
 Igualment, es pot apreciar que les dos gràfiques surten similar a una funció $O(n^{3})$.
 
-
-\section{Problemes al realitzar la pràctica}
-\subsection{Nombres en \cpluspluslogo}
-Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació python, i a continuació es va migrar el codi a \cpluspluslogo. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intèrpret assigna un tipus a cada variable de forma intel·ligent, mentres que a \cpluspluslogo el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren summament grans i podien arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer, i s'hagués d'utilitzar tipus com per exemple ``long long int" o ``unsigned long long int".
-
-\section{Consideracions}
-\begin{enumerate}
-\item Al arxiu Makefile del projecte de python, s'ha afegit una opció per a fer test del codi mitjançant l'eina pylint, però habilitant l'opció d'ignorar els "warnings" provocats per no tindre
-    comentaris per cadascún dels métodes i clases.
-\item S'han mogut tots els tests a un directori anomenat \textit{test}, ja que com s'ha fet la pràctica en python y \cpluspluslogo si no es separava s'havia de tindre els mateixos tests repetits en dos carpetes diferents.
-\item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo porti habilitades les opcions d'optimització O3, ja que sinò el rendiment baixava considerablement.
-\item El codi no inclou anàlisi d'errors sobre el fitxer que se li proporciona. En cas de que el format/fitxer sigui erroni, es veurà l'excepció corresponent 
-    de python o \cpluspluslogo.
-\item Tot i que s'ha augmentat la pila d'execució en el codi recursiu de python, recordem que la pila no és infinita i per tant en cas d'una N molt gran el programa llançarà un error de recursivitat.
-\end{enumerate}
-\section{Conclusions}
-Aquesta pràctica m'ha servit per adquirir els següents coneixements:
-\begin{itemize}
-    \item Comprendre i implementar un algorisme mitjançant backtracking.
-    \item Aprendre les bases de la programació funcional i veure quina millora afegíen en aquest algorisme.
-    \item Iniciarme en la programació en \cpluspluslogo.
-    \item Analitzar els diferents costs (empírics i teòrics) d'un algorisme.
-    \item Convertir un algorisme iteratiu a recursiu.
-    \item Crear un informe a partir de {\LaTeX} per a poder afegir fórmules lògiques i matemàtiques.
-\end{itemize}
-
-\newpage
-
-\appendix
-\section{Pseudocodi algorisme iteratiu}
+\subsection{Pseudocodi algorisme iteratiu}
 \label{pseudocodiiteratiu}
 El codi iteratiu segueix l'algorisme explicat a la secció \ref{optimal-explanation}. Recalcar que la llista que guarda els resultats és utilitzada dintre de la funció \textit{get\_minimum\_cost\_for\_index} per a no haver 
 de tornar a calcular valors mínims de punts que ja havíem resolt anteriorment.
@@ -498,7 +483,7 @@ def get_minimum_aqueduct(self):
     return self.point_values_buffer[0]
 \end{python}
 
-\section{Pseudocodi algorisme recursiu}
+\subsection{Pseudocodi algorisme recursiu}
 El codi recursiu és molt similar al iteratiu. De fet, l'únic que s'ha fet és pensar el cas base (quan el índex és 0) i a partir d'allí anar movent-se per tots els punts augmentant el sufix de l'array mentres que disminueix el prefix fins arribar al cas 
 base (índex 0, on el sufix és tota l'array mentres que el prefix és inexistent).
 
@@ -516,6 +501,37 @@ def get_minimum_aqueduct_recursive(self, index: int):
 def get_minimum_aqueduct(self):
     return self.get_minimum_aqueduct_recursive(self.num_points - 2)
 \end{python}
+
+\section{Problemes al realitzar la pràctica}
+\subsection{Nombres en \cpluspluslogo}
+Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació python, i a continuació es va migrar el codi a \cpluspluslogo. El problema va estar en no es va pensar que python al tindre tipus dinàmics el mateix intèrpret assigna un tipus a cada variable de forma intel·ligent, mentres que a \cpluspluslogo el propi programador és el que assigna els tipus. Això va generar un problema ja que, com els tests eren summament grans i podien arribar a fer operacions com per exemple $10000^{2}$, feia que no fos suficient amb els tipus integer, i s'hagués d'utilitzar tipus com per exemple ``long long int" o ``unsigned long long int".
+
+\section{Consideracions}
+\begin{enumerate}
+\item Al arxiu Makefile del projecte de python, s'ha afegit una opció per a fer test del codi mitjançant l'eina pylint, però habilitant l'opció d'ignorar els "warnings" provocats per no tindre
+    comentaris per cadascún dels métodes i clases.
+\item S'han mogut tots els tests a un directori anomenat \textit{test}, ja que com s'ha fet la pràctica en python y \cpluspluslogo si no es separava s'havia de tindre els mateixos tests repetits en dos carpetes diferents.
+\item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo porti habilitades les opcions d'optimització O3, ja que sinò el rendiment baixava considerablement.
+\item El codi no inclou anàlisi d'errors sobre el fitxer que se li proporciona. En cas de que el format/fitxer sigui erroni, es veurà l'excepció corresponent 
+    de python o \cpluspluslogo.
+\item Tot i que s'ha augmentat la pila d'execució en el codi recursiu de python, recordem que la pila no és infinita i per tant en cas d'una N molt gran el programa llançarà un error de recursivitat.
+\end{enumerate}
+
+\section{Conclusions}
+Aquesta pràctica m'ha servit per adquirir els següents coneixements:
+\begin{itemize}
+    \item Comprendre i implementar un algorisme mitjançant backtracking.
+    \item Comprendre i implementar un algorisme mitjançant greedy.
+    \item Aprendre les bases de la programació funcional i veure quina millora afegíen en aquest algorisme.
+    \item Iniciarme en la programació en \cpluspluslogo.
+    \item Analitzar els diferents costs (empírics i teòrics) d'un algorisme.
+    \item Convertir un algorisme iteratiu a recursiu.
+    \item Crear un informe a partir de {\LaTeX} per a poder afegir fórmules lògiques i matemàtiques.
+\end{itemize}
+
+\newpage
+
+\appendix
 
 \section{Repositori github}
 \label{github}
