@@ -83,15 +83,39 @@
 \newpage
 
 \section{Greedy}
-Un algorisme greedy (o algorisme voraç), segueix l'heurística de resolució de problemes de fer l’elecció local òptima en cada etapa. En aquest cas d'ús, veurem que aquesta no és una solució (real), ja que potser que les solucions locals òptimes, a la llarga no façin el aqueducte amb el cost mínim.
+Un algorisme greedy (o algorisme voraç), segueix l'heurística de resolució de problemes de fer l’elecció local òptima en cada etapa. En aquest cas d'ús, veurem que aquesta no és una solució (real), ja que potser que les solucions locals òptimes, a la llarga no façin el aqueducte amb el cost mínim. \\
+
+Un exemple per anar d'un punt $a$ a un punt $d$ seguint l'algorisme greedy, podría ser el de la figura \ref{fig:example-greedy}.
+
+\begin{figure}[h!]
+    \includegraphics[max size={\textwidth}{\textheight}]{greedy-example}
+    \centering
+    \caption{Exemple algorisme Greedy}
+    \label{fig:example-greedy}
+\end{figure}
 
 
+\subsection{Cost algorisme}
+\subsubsection{Iteratiu}
+Veiem que el programa té 2 bucles anidats, i que en el pitjor dels casos haurem recorregut els dos $n^2$ cops.
+Per tant, podem dir que el cost de l'algorisme en forma iterativa és de $O(n^{2})$.
 
+\subsubsection{Recursiu}
+Òbviament, si l'únic que hem fet ha sigut passar l'algorisme iteratiu a recursiu (o a l'inversa), el cost d'aquest continuarà sent el mateix. L'únic que canviarà serà que ara s'utilitzarà memòria de la pila d'execució i no memòria de heap, per tant el programa es més propens a sofrir un \textit{stackoverflow}. Finalment podem dir que el cost és de $O(n^{2})$.
 
+\subsubsection{Empíric}
+\begin{figure}[h!]
+    \includegraphics[max size={\textwidth}{\textheight}]{greedy-benchmark}
+    \centering
+    \caption{Cost empíric en Python}
+    \label{fig:greedy-benchmark}
+\end{figure}
 
+\newpage
+    
 % backtracking
 \section{Backtracking}
-La primera idea que es va provar per solucionar el problema va ser anar provant totes les diferents solucions i quedar-se amb la més òptima. Òbviament, les solucions no vàlides es podien anar descartant per poder estalviar temps. Aquesta tècnica s'anomena backtracking.  Una
+La técnica de Bactracking consisteix en anar provant totes les diferents solucions i quedar-se amb la més òptima. Una
 resolució mitjançant backtracking per anar del punt A al punt D on es pot crear arcs entre tots els punts sería la figura \ref{exemple:backtracking}.
 
 \begin{figure}[htbp]
@@ -120,10 +144,31 @@ resolució mitjançant backtracking per anar del punt A al punt D on es pot crea
 \end{center}
 \end{figure}
 
-\subsubsection{Per què no utilitzar Backtracking en aquest cas}
-El cost que s'ens demanava era de $O(n^{3})$, on n era el nombre de punts del sòl. En canvi, veiem que l'algorisme mitjançant backtracking té un cost de $O(n!)$, per tant no ens serveix. Igualment, s'ha decidit deixar el codi de backtracking en una branch del repositori anomenada \textit{backtracking} \footnote{No s'ha de confondre amb la branch \textit{main}, que es la versió final amb un cost de $O(n^{3})$.}
+\subsection{Cost algorisme}
 
-% principi optimitat
+\subsubsection{Recursiu}
+Veiem que si tenim $N$ punts, en el pitjor dels casos l'equació de recurrència el cost és: 
+\begin{equation}
+    T(n) = n*T(n-1) + O(n^2)
+\end{equation}
+En $n * T(n-1)$ ve de la crida de backtracking, mentres que $n^2$ ve de comprovar si el arc és vàlid n vegades.
+
+Per tant, en notació big Oh, podem dir que aquest algorisme té un cost teòric de $O(n!)$.
+
+\subsubsection{Iteratiu}
+La forma més senzilla de pasar un algorisme que utilitza backtracking a iteratiu és mitjançant l'ús d'una pila\footnote{"Imitant" en certa forma el que fa la pila d'execució}. El cost algorímic serà igualment $O(n!)$.
+
+
+\subsubsection{Empíric}
+\begin{figure}[h!]
+    \includegraphics[max size={\textwidth}{\textheight}]{backtracking-benchmark}
+    \centering
+    \caption{Cost empíric en Python}
+    \label{fig:backtracking-benchmark}
+\end{figure}
+
+
+% dynamic
 \newpage
 \section{Dynamic Programming}
 \label{optimal-explanation}
@@ -453,17 +498,17 @@ memòria de heap, per tant el programa es més propens a sofrir un \textit{stack
 
 \subsubsection{Empíric}
 \begin{figure}[h!]
-    \includegraphics[max size={\textwidth}{\textheight}]{python-benchmarks}
+    \includegraphics[max size={\textwidth}{\textheight}]{python-dynamic-benchmarks}
     \centering
     \caption{Cost empíric en Python}
-    \label{fig:python-benchmark}
+    \label{fig:python-dynamic-benchmarks}
 \end{figure}
     
 \begin{figure}[h!]
-    \includegraphics[max size={\textwidth}{\textheight}]{cpp-benchmarks}
+    \includegraphics[max size={\textwidth}{\textheight}]{cpp-dynamic-benchmarks}
     \centering
     \caption{Cost empíric en \cpluspluslogo}
-    \label{fig:cpp-benchmark}
+    \label{fig:cpp-dynamic-benchmarks}
 \end{figure}
 
 Recalcar que en Python,  es van fer els testos fins N=1450 (figura \ref{fig:python-benchmark}), ja que sino el temps d'execució ja era sumament lent, mentres que 
