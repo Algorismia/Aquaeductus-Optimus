@@ -156,7 +156,7 @@ En $n * T(n-1)$ ve de la crida de backtracking, mentres que $n^2$ ve de comprova
 Per tant, en notació big Oh, podem dir que aquest algorisme té un cost teòric de $O(n!)$.
 
 \subsubsection{Iteratiu}
-La forma més senzilla de pasar un algorisme que utilitza backtracking a iteratiu és mitjançant l'ús d'una pila\footnote{"Imitant" en certa forma el que fa la pila d'execució}. El cost algorímic serà igualment $O(n!)$.
+La forma més senzilla de pasar un algorisme que utilitza backtracking a iteratiu és mitjançant l'ús d'una pila\footnote{"Imitant" en certa forma el que fa la pila d'execució}. El cost algorímic serà igualment $O(n!)$, però ara s'utilitzarà memòria de heap i no de pila d'execució, per tant \textbf{NO} es probable que sofrim un \textit{stackoverflow}.
 
 
 \subsubsection{Empíric}
@@ -179,7 +179,7 @@ Abans de poder comentar la solució, hem d'entendre que és el principi d'optimi
 Per tant, seguint aquesta definició podem dir que un problema podrà ser resolt seguint el principi d'optimitat si la seva solució òptima pot ser construïda eficientment a partir de les solucions òptimes dels seus subproblemes. En altres paraules, que podem resoldre un problema gran donades les solucions dels seus problemes petits.
 
 % nostre cas d'us
-\subsubsection{Aplicació i funcionament en el nostre cas d'ús}
+\subsection{Aplicació i funcionament en el nostre cas d'ús}
 \label{seccio:funcionament}
 En el nostre problema dels aqüeductes, veiem que podem aplicar el principi d'optimitat per a trobar una solució òptima, ja que la solució és construïda eficientment a partir de les solucions òptimes dels seus subproblemes. Per a explicar-ho millor he decidit resoldre un petit exemple.
 
@@ -395,7 +395,7 @@ Finalment, en el cas de $f(A)$, haurem de calcular el cost de A a E, de A a B + 
 
 % demostració algorisme
 \newpage
-\subsubsection{Demostració per reducció al absurd}
+\subsection{Demostració per reducció al absurd}
 Donat un aqüeducte que va d'un punt A a un punt J i del qual sabem que el recorregut R\textsubscript{a...j} és l'òptim (figura: \ref{demostracio:atoj}).
 
 \begin{figure}[htbp]
@@ -461,7 +461,7 @@ Llavors:\\
 Però aquesta afirmació \textbf{NO} pot ser certa! Ja que en un principi hem assegurat que R\textsubscript{a...k} + R\textsubscript{k...j} era la solució òptima i per tant no hi pot haver-hi cap més petita que aquesta.
 
 
-\subsubsection{Especificació formal}
+\subsection{Especificació formal}
 Precondició :
 \begin{itemize}
     \item Una altura màxima del aqueducte (h), on ($1 \leq h \leq 10^5$)
@@ -476,8 +476,7 @@ Postcondició: cost mínim de crear l'aqueducte mitjançant els valors $\alpha$ 
         $ resultat \in \mathbb{N} \land resultat \leq \min(R) $, on R és el conjunt de possibles resultats.
 
 
- 
-\subsubsection{Formula algorisme}
+\subsection{Formula algorisme}
 Un cop ja sabem el funcionament del algorisme i hem demostrat que el seu comportament es correcte, podem especificar-lo amb una formula molt similar a la de l'equació de Bellman (ja que tal i com s'ha dit a la subsecció \ref{seccio:funcionament} aquest problema es resolt seguint el principi d'optimitat).
 
 \begin{center}
@@ -555,7 +554,7 @@ Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació
 \begin{enumerate}
 \item Al arxiu Makefile del projecte de python, s'ha afegit una opció per a fer test del codi mitjançant l'eina pylint, però habilitant l'opció d'ignorar els "warnings" provocats per no tindre
     comentaris per cadascún dels métodes i clases.
-\item S'han mogut tots els tests a un directori anomenat \textit{test}, ja que com s'ha fet la pràctica en python y \cpluspluslogo si no es separava s'havia de tindre els mateixos tests repetits en dos carpetes diferents.
+\item S'han mogut tots els tests a un directori anomenat \textit{test}, ja que com s'ha fet la pràctica en python y \cpluspluslogo  si no es separava s'havia de tindre els mateixos tests repetits en dos carpetes diferents.
 \item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo porti habilitades les opcions d'optimització O3, ja que sinò el rendiment baixava considerablement.
 \item El codi no inclou anàlisi d'errors sobre el fitxer que se li proporciona. En cas de que el format/fitxer sigui erroni, es veurà l'excepció corresponent 
     de python o \cpluspluslogo.
@@ -581,7 +580,6 @@ Aquesta pràctica m'ha servit per adquirir els següents coneixements:
 \section{Repositori github}
 \label{github}
 
-El repositori de github es pot trobar \href{https://github.com/Algorismia/Aquaeductus}{aquí}. Tal i com s'ha anat comentant al informe, hi ha una branch que és la resolució final (branch: main) i una altra que conté el codi de backtracking (branch: backtracking).
-Recalcar que, la versió de backtracking, no té el codi tant pulit com la versió final ja que no era el objectiu de la pràctica.
+El repositori de github es pot trobar \href{https://github.com/Algorismia/Aquaeductus-Optimus}{aquí}. Recalcar que llegir el README adjuntat amb el repositori és indispensable per a saber com executar els tests de forma correcta i donarse una idea de com es troba estructurat el projecte. 
 
 \end{document}
