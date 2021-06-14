@@ -9,6 +9,7 @@ all: test
 pylint:
 	@echo -e ${green} Running pylint on iterative and recursive file ${nocol}
 	pylint --disable=missing-docstring aqueducte.py
+	pylint --disable=missing-docstring aqueducte_recursive.py
 
 recursive:
 	@echo -e ${green} Running recursive test ${nocol}
