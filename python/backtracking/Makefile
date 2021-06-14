@@ -1,5 +1,5 @@
 test := ../../test/backtracking
-interpreter=python3
+interpreter=python
 green='\033[0;32m'
 nocol='\033[0m'
 
