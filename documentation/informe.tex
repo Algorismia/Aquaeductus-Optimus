@@ -60,7 +60,7 @@
     \textbf{Pràctica 2: Aquæductus Optimus}
     \line(1,0){250}
     \\[0.5cm]
-	\large Assignatura d'Algorítmica i complexitat del Grau d'Enginyería Informàtica
+	\large Assignatura d'Algorítmica i complexitat del Grau d'Enginyeria Informàtica
 }
 \author{Pablo Fraile Alonso}
 \date{\today}
@@ -97,17 +97,18 @@ Un exemple per anar d'un punt $a$ a un punt $d$ seguint l'algorisme greedy, podr
 
 \subsection{Cost algorisme}
 \subsubsection{Iteratiu}
-Veiem que el programa té 2 bucles anidats, i que en el pitjor dels casos haurem recorregut els dos $n^2$ cops.
-Per tant, podem dir que el cost de l'algorisme en forma iterativa és de $O(n^{2})$.
+Veiem que el programa té 3 bucles anidats on cadascun té un pitjor cas amb cost de $O(n)$, i que en el pitjor dels casos haurem recorregut $n^3$ vegades.
+Per tant, podem dir que el cost de l'algorisme en forma iterativa és de $O(n^{3})$.
 
 \subsubsection{Recursiu}
-Òbviament, si l'únic que hem fet ha sigut passar l'algorisme iteratiu a recursiu (o a l'inversa), el cost d'aquest continuarà sent el mateix. L'únic que canviarà serà que ara s'utilitzarà memòria de la pila d'execució i no memòria de heap, per tant el programa es més propens a sofrir un \textit{stackoverflow}. Finalment podem dir que el cost és de $O(n^{2})$.
+Òbviament, si l'únic que hem fet ha sigut passar l'algorisme iteratiu a recursiu (o a l'inversa), el cost d'aquest continuarà sent el mateix. L'únic que canviarà serà que ara s'utilitzarà memòria de la pila d'execució i no memòria de heap, per tant el programa es més propens a sofrir un \textit{stackoverflow}. Finalment podem dir que el cost és de $O(n^{3})$.
 
 \subsubsection{Empíric}
+Un cop executat varies vegades l'algorisme amb un conjunt de $n$ diferents, ens crea la gràfica de la figura \ref{fig:greedy-benchmark}. Aquesta, concorda amb la justificació de la notació assimptòtica donada anteriorment.
 \begin{figure}[h!]
     \includegraphics[max size={\textwidth}{\textheight}]{greedy-benchmark}
     \centering
-    \caption{Cost empíric en Python}
+    \caption{Cost empíric emprant Greedy en Python}
     \label{fig:greedy-benchmark}
 \end{figure}
 
@@ -139,7 +140,7 @@ resolució mitjançant backtracking per anar del punt A al punt D on es pot crea
     \draw[->] (C2.south) --(D3.north);
     \draw[->] (C1.south) --(D4.north);
 \end{tikzpicture}
-\caption{Exemple backtracking}
+\caption{Exemple crides recursives Backtracking}
 \label{exemple:backtracking}
 \end{center}
 \end{figure}
@@ -147,29 +148,51 @@ resolució mitjançant backtracking per anar del punt A al punt D on es pot crea
 \subsection{Cost algorisme}
 
 \subsubsection{Recursiu}
-Veiem que si tenim $N$ punts, en el pitjor dels casos l'equació de recurrència el cost és: 
-\begin{equation}
-    T(n) = n*T(n-1) + O(n^2)
-\end{equation}
-En $n * T(n-1)$ ve de la crida de backtracking, mentres que $n^2$ ve de comprovar si el arc és vàlid n vegades.
+Primerament es va tindre en compte quin sería el cost de les crides recursives que, tal i com s'aprecia a la figura \ref{figure:backtracking-nodes}, veiem que creen una forma d'arbre que haurem de recòrrer de forma postordre (finalitzem primer subarbre esquerra, després dret i finalment l'arrel). \\
 
-Per tant, en notació big Oh, podem dir que aquest algorisme té un cost teòric de $O(n!)$.
+Finalment, veiem que el nombre de nodes a recòrrer en funció de $n$ (on $n$ és el nombre de pilars) serà $2^{n-1}$.\\
+\newpage
+
+\begin{figure}[h!]
+    \includegraphics[max size={\textwidth}{\textheight}]{backtracking-number-nodes}
+    \centering
+    \caption{Nombre de nodes a les crides recursives de backtracking}
+    \label{figure:backtracking-nodes}
+\end{figure}
+
+A més, falta calcular el cost de la funció $is\_valid$ en l'arbre recursiu (figura \ref{figure:backtracking-is-valid}). Aquest s'ha trobat calculant quantes vegades iterava el bucle en funció de $n$, i s'ha vist que es creava la seqüència 4, 11, 26, 57, 120, etc. S'ha deduït i comprovat que l'equació de recurrència en funció de $n$ és $2^{n-1} - n$. \\
+
+\begin{figure}[h!]
+    \includegraphics[max size={\textwidth}{\textheight}]{backtracking-is_valid}
+    \centering
+    \caption{Nombre d'iteracions de la funció is\_valid a backtracking}
+    \label{figure:backtracking-is-valid}
+\end{figure}
+
+Finalment, un cop ja calculades les dos equacions de recurrència, podem sumar-les per obtenir el cost del algorisme, el que ens donaría:
+\begin{center}
+$2^{n-1} + 2^{n-1} - n \Longrightarrow 2*2^{n-1} - n$
+\end{center}
+
+Que en notació assimptòtica, podem representar com: $O(2^{n})$
 
 \subsubsection{Iteratiu}
-La forma més senzilla de pasar un algorisme que utilitza backtracking a iteratiu és mitjançant l'ús d'una pila\footnote{"Imitant" en certa forma el que fa la pila d'execució}. El cost algorímic serà igualment $O(n!)$, però ara s'utilitzarà memòria de heap i no de pila d'execució, per tant \textbf{NO} es probable que sofrim un \textit{stackoverflow}.
-
+La forma més senzilla de pasar un algorisme que utilitza backtracking a iteratiu és mitjançant l'ús d'una pila\footnote{"Imitant" en certa forma el que fa la pila d'execució}. El cost algorímic serà igualment $O(2^n)$, però ara s'utilitzarà memòria de heap i no de pila d'execució, per tant \textbf{NO} es probable que sofrim un \textit{stackoverflow}.
 
 \subsubsection{Empíric}
-\begin{figure}[h!]
-    \includegraphics[max size={\textwidth}{\textheight}]{backtracking-benchmark}
+Finalment, s'ha executat múltiples vegades el algorisme i s'ha aconseguit formar la gràfica de la figura \ref{fig:backtracking-benchmark}, que concorda amb la nostra afirmació de que el cost és de $O(2^n)$.
+
+\begin{figure}[!hbtp]
+    \includegraphics[max size={\textwidth}{\textheight*1/3}]{backtracking-benchmark}
     \centering
-    \caption{Cost empíric en Python}
+    \caption{Cost empíric emprant Backtracking en Python}
     \label{fig:backtracking-benchmark}
 \end{figure}
 
+\newpage
 
 % dynamic
-\newpage
+
 \section{Dynamic Programming}
 \label{optimal-explanation}
 Abans de poder comentar la solució, hem d'entendre que és el principi d'optimitat: 
@@ -476,7 +499,7 @@ Postcondició: cost mínim de crear l'aqueducte mitjançant els valors $\alpha$ 
         $ resultat \in \mathbb{N} \land resultat \leq \min(R) $, on R és el conjunt de possibles resultats.
 
 
-\subsection{Formula algorisme}
+\subsection{Fòrmula algorisme}
 Un cop ja sabem el funcionament del algorisme i hem demostrat que el seu comportament es correcte, podem especificar-lo amb una formula molt similar a la de l'equació de Bellman (ja que tal i com s'ha dit a la subsecció \ref{seccio:funcionament} aquest problema es resolt seguint el principi d'optimitat).
 
 \begin{center}
@@ -493,25 +516,26 @@ Per tant, podem dir que el cost de l'algorisme en forma iterativa és de $O(n^{3
 
 \subsubsection{Recursiu}
 Òbviament, si l'únic que hem fet ha sigut passar l'algorisme iteratiu a recursiu, el cost d'aquest continuarà sent el mateix. L'únic que canviarà serà que ara s'utilitzarà memòria de la pila d'execució i no 
-memòria de heap, per tant el programa es més propens a sofrir un \textit{stackoverflow}. Finalment podem dir que el cost és de $O(n^{3})$.
+memòria de heap, per tant el programa es més propens a sofrir un \textit{stackoverflow} (o \textit{recursion error} en python). Finalment podem dir que el cost és de $O(n^{3})$.
 
 \subsubsection{Empíric}
 \begin{figure}[h!]
     \includegraphics[max size={\textwidth}{\textheight}]{python-dynamic-benchmarks}
     \centering
-    \caption{Cost empíric en Python}
+    \caption{Cost empíric emprant Dynamic Programming en Python}
     \label{fig:python-dynamic-benchmarks}
 \end{figure}
     
 \begin{figure}[h!]
     \includegraphics[max size={\textwidth}{\textheight}]{cpp-dynamic-benchmarks}
     \centering
-    \caption{Cost empíric en \cpluspluslogo}
+    \caption{Cost empíric emprant Dynamic Programming en \cpluspluslogo}
     \label{fig:cpp-dynamic-benchmarks}
 \end{figure}
 
-Recalcar que en Python,  es van fer els testos fins N=1450 (figura \ref{fig:python-benchmark}), ja que sino el temps d'execució ja era sumament lent, mentres que 
-amb \cpluspluslogo (figura \ref{fig:cpp-benchmark}), si que es van poder fer execucions fins N=5000.\\
+Recalcar que en Python,  es van fer els testos fins N=1450 (figura \ref{fig:python-dynamic-benchmarks}), ja que sino el temps d'execució ja era sumament lent, mentres que 
+amb \cpluspluslogo (figura \ref{fig:cpp-dynamic-benchmarks}), si que es van poder fer execucions fins N=5000.\\
+
 Igualment, es pot apreciar que les dos gràfiques surten similar a una funció $O(n^{3})$.
 
 \subsection{Pseudocodi algorisme iteratiu}
@@ -552,13 +576,19 @@ Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació
 
 \section{Consideracions}
 \begin{enumerate}
-\item Al arxiu Makefile del projecte de python, s'ha afegit una opció per a fer test del codi mitjançant l'eina pylint, però habilitant l'opció d'ignorar els "warnings" provocats per no tindre
+\item Al arxiu Makefile del projecte de python, s'ha afegit una opció per a fer test del codi mitjançant l'eina pylint, però habilitant l'opció d'ignorar els ``warnings" provocats per no tindre
     comentaris per cadascún dels métodes i clases.
 \item S'han mogut tots els tests a un directori anomenat \textit{test}, ja que com s'ha fet la pràctica en python y \cpluspluslogo  si no es separava s'havia de tindre els mateixos tests repetits en dos carpetes diferents.
 \item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo porti habilitades les opcions d'optimització O3, ja que sinò el rendiment baixava considerablement.
 \item El codi no inclou anàlisi d'errors sobre el fitxer que se li proporciona. En cas de que el format/fitxer sigui erroni, es veurà l'excepció corresponent 
     de python o \cpluspluslogo.
 \item Tot i que s'ha augmentat la pila d'execució en el codi recursiu de python, recordem que la pila no és infinita i per tant en cas d'una N molt gran el programa llançarà un error de recursivitat.
+\item Al programari de python s'ha emprat el patró de disseny \textit{template}, per tal de que el codi de les classes \textit{Point}, \textit{Circumference} i el \textit{parser} del fitxer no estigués repetit en 6 fitxers diferents. El fet de que python s'hagi de situar a un altre directori (anomenat \textit{common}) per poder importar els fitxers ha ocasionat afegir linees de codi que amb ulls de l'eïna pylint eren poc correctes. Aquestes s'han evitat afegint els comentaris:
+    \begin{verbatim}
+    # pylint: disable=wrong-import-position
+    # pylint: disable=import-error
+    \end{verbatim}
+    per tal de poder obtenir bona puntuació a l'evaluació.
 \end{enumerate}
 
 \section{Conclusions}
