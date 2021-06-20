@@ -1,10 +1,12 @@
+# pylint: disable=wrong-import-position
+# pylint: disable=import-error
+# pylint: disable=too-few-public-methods
 import math
 from enum import Enum
 import sys
-#pylint: disable=wrong-import-position
-sys.path.insert(1, '../common')  # pylint: disable=import-error
-from land import Land  # pylint: disable=import-error
-from main import main  # pylint: disable=import-error
+sys.path.insert(1, '../common')
+from land import Land
+from main import main
 
 
 class EntryPoint(Enum):
@@ -31,29 +33,29 @@ class LandAlgorithm(Land):
         return_ = math.inf
         my_stack = [Context(current_point_index, EntryPoint.CALL)]
         while my_stack:
-            current_context = my_stack.pop()
-            if current_context.entry == EntryPoint.CALL:
-                if current_context.index + 1 == self.num_points:
-                    return_ = self.cost_support(self.points[current_context.index])
+            current = my_stack.pop()
+            if current.entry == EntryPoint.CALL:
+                if current.index + 1 == self.num_points:
+                    return_ = self.cost_support(self.points[current.index])
                 else:
-                    current_context.entry = EntryPoint.RESUME
-                    my_stack.append(current_context)
-                    if self.valid_arch(current_context.index, current_context.next_index):
-                        current_context.actual_min = self.cost_arch(self.points[current_context.index],
-                                                     self.points[current_context.next_index]) + \
-                                                     self.cost_support(self.points[current_context.index])
-                        my_stack.append(Context(current_context.next_index, EntryPoint.CALL))
+                    current.entry = EntryPoint.RESUME
+                    my_stack.append(current)
+                    if self.valid_arch(current.index, current.next_index):
+                        current.actual_min = self.cost_arch(self.points[current.index],
+                                                     self.points[current.next_index]) + \
+                                                     self.cost_support(self.points[current.index])
+                        my_stack.append(Context(current.next_index, EntryPoint.CALL))
                     else:
                         return_ = math.inf
             else:
-                current_context.next_index += 1
-                if current_context.actual_min + return_ < current_context.min_cost:
-                    current_context.min_cost = current_context.actual_min + return_
-                if current_context.next_index == self.num_points:
-                    return_ = current_context.min_cost
+                current.next_index += 1
+                if current.actual_min + return_ < current.min_cost:
+                    current.min_cost = current.actual_min + return_
+                if current.next_index == self.num_points:
+                    return_ = current.min_cost
                 else:
-                    current_context.entry = EntryPoint.CALL
-                    my_stack.append(current_context)
+                    current.entry = EntryPoint.CALL
+                    my_stack.append(current)
         return return_
 
 

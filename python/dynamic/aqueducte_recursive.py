@@ -1,9 +1,10 @@
+# pylint: disable=wrong-import-position
+# pylint: disable=import-error
 import sys
 import math
-#pylint: disable=wrong-import-position
-sys.path.insert(1, '../common')  # pylint: disable=import-error
-from land import Land  # pylint: disable=import-error
-from main import main  # pylint: disable=import-error
+sys.path.insert(1, '../common')
+from land import Land
+from main import main
 
 
 class LandAlgorithm(Land):
@@ -17,6 +18,8 @@ class LandAlgorithm(Land):
         if buffer_points[second_point_index]:
             cost_second_point = buffer_points[second_point_index]
         return cost_first_point + cost_arch + cost_second_point
+
+    # algorithm
 
     def algorithm(self):
         point_values_buffer = [None] * self.num_points

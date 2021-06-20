@@ -1,9 +1,10 @@
+# pylint: disable=wrong-import-position
+# pylint: disable=import-error
 import math
 import sys
-#pylint: disable=wrong-import-position
-sys.path.insert(1, '../common')  # pylint: disable=import-error
-from land import Land  # pylint: disable=import-error
-from main import main  # pylint: disable=import-error
+sys.path.insert(1, '../common')
+from land import Land
+from main import main
 
 
 class LandAlgorithm(Land):

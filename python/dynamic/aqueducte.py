@@ -1,9 +1,10 @@
+# pylint: disable=wrong-import-position
+# pylint: disable=import-error
 import math
 import sys
-#pylint: disable=wrong-import-position
-sys.path.insert(1, '../common')  # pylint: disable=import-error
-from land import Land  # pylint: disable=import-error
-from main import main  # pylint: disable=import-error
+sys.path.insert(1, '../common')
+from land import Land
+from main import main
 
 
 class LandAlgorithm(Land):
@@ -18,8 +19,17 @@ class LandAlgorithm(Land):
             cost_second_point = buffer_points[second_point_index]
         return cost_first_point + cost_arch + cost_second_point
 
+    # algorithm
+
     def algorithm(self):
         return self.get_minimum_aqueduct()
+
+    def get_minimum_aqueduct(self):
+        point_values_buffer = [None] * self.num_points
+        for i in range(self.num_points - 2, -1, -1):
+            minimum_of_this_point = self.get_minimum_cost_for_index(i, point_values_buffer)
+            point_values_buffer[i] = minimum_of_this_point
+        return point_values_buffer[0]
 
     def get_minimum_cost_for_index(self, index: int, point_values_buffer: list) -> int:
         minimum = math.inf
@@ -28,13 +38,6 @@ class LandAlgorithm(Land):
                 cost_points = self.total_cost(index, i, point_values_buffer)
                 minimum = min(minimum, cost_points)
         return minimum
-
-    def get_minimum_aqueduct(self):
-        point_values_buffer = [None] * self.num_points
-        for i in range(self.num_points - 2, -1, -1):
-            minimum_of_this_point = self.get_minimum_cost_for_index(i, point_values_buffer)
-            point_values_buffer[i] = minimum_of_this_point
-        return point_values_buffer[0]
 
 
 if __name__ == "__main__":
