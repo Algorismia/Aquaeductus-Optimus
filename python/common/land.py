@@ -1,6 +1,8 @@
+# pylint: disable=wrong-import-position
+# pylint: disable=import-error
+from abc import ABC, abstractmethod
 from point import Point
 from circumference import Circumference
-from abc import ABC, abstractmethod
 
 
 class Land(ABC):
@@ -47,5 +49,5 @@ class Land(ABC):
     # algorithm
 
     @abstractmethod
-    def algorithm():
+    def algorithm(self):
         pass
