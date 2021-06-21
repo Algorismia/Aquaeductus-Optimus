@@ -115,7 +115,10 @@ Un cop executat varies vegades l'algorisme amb un conjunt de $n$ diferents, ens 
 \end{figure}
 
 \subsection{Pseudo-codi de l'algorisme}
-\begin{python}
+El pseudocodi del algorisme està inspirat en la sintaxis de python, però \textbf{NO és python}. Per tant,
+aquest codi únicament dona l'idea del algorisme. L'implementació funcional en \cpluspluslogo i python es mostra en la carpeta de codi del projecte. \\
+
+\begin{verbatim}
 def get_minimum_aqueduct():
     current_point = 0
     accumulator = cost_support(current_point)
@@ -123,12 +126,22 @@ def get_minimum_aqueduct():
         cost, current_point = get_minimum_arch(current_point)
         if cost == infinity:
             return infinity
-        accumulator = accumulator + cost
+        accumulator += cost
     return accumulator
 
-def get_minimum_arch(current_point):
-    # returns the minimum cost (and the point who achieves it) from current_point
-\end{python}
+# returns the minimum cost (and the point who achieves it) from init_point
+def get_minimum_arch(init_point):
+    minimum = infinity 
+    minimum_point = None
+    for current from init_point + 1 to final_point:
+        if valid_arch(init_point, current):
+            cost = total_cost(init_point, current)
+            if cost < minimum:
+                minimum = cost
+                minimum_point = current
+    return minimum - cost_support(init_point), minimum_point
+
+\end{verbatim}
 
 \newpage
     
@@ -168,7 +181,7 @@ resolució mitjançant backtracking per anar del punt A al punt D on es pot crea
 \subsubsection{Recursiu}
 Primerament es va tindre en compte quin sería el cost de les crides recursives que, tal i com s'aprecia a la figura \ref{figure:backtracking-nodes}, veiem que creen una forma d'arbre que haurem de recòrrer de forma postordre (finalitzem primer subarbre esquerra, després dret i finalment l'arrel). \\
 
-Finalment, veiem que el nombre de nodes a recòrrer en funció de $n$ (on $n$ és el nombre de pilars) serà $2^{n-1}$.\\
+Es dedueix, a partir de l'equació de recurrència creada pel arbre, que el nombre de nodes a recòrrer en funció de $n$ (on $n$ és el nombre de pilars) serà $2^{n-1}$.\\
 \newpage
 
 \begin{figure}[h!]
@@ -195,7 +208,7 @@ $2^{n-1} + 2^{n-1} - n \Longrightarrow 2*2^{n-1} - n$
 Que en notació assimptòtica, podem representar com: $O(2^{n})$
 
 \subsubsection{Iteratiu}
-La forma més senzilla de pasar un algorisme que utilitza backtracking a iteratiu és mitjançant l'ús d'una pila\footnote{"Imitant" en certa forma el que fa la pila d'execució}. El cost algorímic serà igualment $O(2^n)$, però ara s'utilitzarà memòria de heap i no de pila d'execució, per tant \textbf{NO} es probable que sofrim un \textit{stackoverflow}.
+La forma més senzilla de pasar un algorisme que utilitza backtracking a iteratiu és mitjançant l'ús d'una pila\footnote{"Imitant" en certa forma el que fa la pila d'execució}. El cost algorímic serà igualment $O(2^n)$, però ara s'utilitzarà memòria de heap i no de pila d'execució, per tant és menys probable que sofrim un \textit{stackoverflow}.
 
 \subsubsection{Empíric}
 Finalment, s'ha executat múltiples vegades el algorisme i s'ha aconseguit formar la gràfica de la figura \ref{fig:backtracking-benchmark}, que concorda amb la nostra afirmació de que el cost és de $O(2^n)$.
@@ -208,21 +221,25 @@ Finalment, s'ha executat múltiples vegades el algorisme i s'ha aconseguit forma
 \end{figure}
 
 \subsection{Pseudo-codi de l'algorisme}
-\begin{python}
+
+El pseudocodi del algorisme està inspirat en la sintaxis de python, però \textbf{NO és python}. Per tant,
+aquest codi únicament dona l'idea del algorisme. L'implementació funcional en \cpluspluslogo i python es mostra en la carpeta de codi del projecte. \\
+
+\begin{verbatim}
 def get_minimum_aqueduct(current_point_index=0):
     # base case
     if current_point_index == final_point_of_aqueduct:
         return cost_support(current_point_index)
     # backtrack
-        min_cost = infinity
-        for analized_point from current_point_index + 1 to final_point_index:
-            if valid_arch(current_point_index, analized_point):
-                cost_of_analized = self.get_minimum_aqueduct(i)
-                cost_of_analized += cost_support(current_point_index)
-                cost_of_analized += cost_arch(current_point_index, analized_point)
-                min_cost = min(min_cost, cost_of_analized)
-        return min_cost
-\end{python}
+    min_cost = infinity
+    for analized_point from current_point_index + 1 to final_point_index:
+        if valid_arch(current_point_index, analized_point):
+            cost_of_analized = get_minimum_aqueduct(analized_point)
+            cost_of_analized += cost_support(current_point_index)
+            cost_of_analized += cost_arch(current_point_index, analized_point)
+            min_cost = min(min_cost, cost_of_analized)
+    return min_cost
+\end{verbatim}
 \newpage
 
 % dynamic
@@ -534,7 +551,7 @@ Postcondició: cost mínim de crear l'aqueducte mitjançant els valors $\alpha$ 
 
 
 \subsection{Fòrmula algorisme}
-Un cop ja sabem el funcionament del algorisme i hem demostrat que el seu comportament es correcte, podem especificar-lo amb una formula molt similar a la de l'equació de Bellman (ja que tal i com s'ha dit a la subsecció \ref{seccio:funcionament} aquest problema es resolt seguint el principi d'optimitat).
+Un cop ja sabem el funcionament del algorisme i hem demostrat que el seu comportament es correcte, podem especificar-lo amb una fòrmula molt similar a la de l'equació de Bellman (ja que tal i com s'ha dit a la subsecció \ref{seccio:funcionament} aquest problema es resolt seguint el principi d'optimitat).
 
 \begin{center}
 \begin{equation}
@@ -572,21 +589,33 @@ amb \cpluspluslogo (figura \ref{fig:cpp-dynamic-benchmarks}), si que es van pode
 
 Igualment, es pot apreciar que les dos gràfiques surten similar a una funció $O(n^{3})$.
 
-\subsection{Pseudocodi algorisme}
-\label{pseudocodiiteratiu}
-El codi iteratiu segueix l'algorisme explicat a la secció \ref{optimal-explanation}. Recalcar que la llista que guarda els resultats és utilitzada dintre de la funció \textit{get\_minimum\_cost\_for\_index} per a no haver 
-de tornar a calcular valors mínims de punts que ja havíem resolt anteriorment.
+\subsection{Pseudo-codi algorisme}
+El codi iteratiu segueix l'algorisme explicat a la secció \ref{optimal-explanation}. Tal i com s'ha anat comentant, el pseudocodi està inspirat en la sintaxis de python, però \textbf{NO és python}. Per tant,
+aquest codi únicament dona l'idea del algorisme, l'implementació en \cpluspluslogo i python es mostra en la carpeta de codi del projecte.
 
-\begin{python}
+\begin{verbatim}
 def get_minimum_aqueduct():
-    for i in range(self.num_points - 2, -1, -1):
-        minimum_of_this_point = self.get_minimum_cost_for_index(i)
-        self.point_values_buffer[i] = minimum_of_this_point
-    return self.point_values_buffer[0]
+    buffer = Array of N elements containing Nones (null)
+    for current_point from penultimate_point to first_point:
+         buffer[current_point] = get_minimum_cost(current_point, buffer)
+    return buffer[0]
 
-def get_minimum_cost_for_index(index):
+
+
+def get_minimum_cost(index, buffer):
+    minimum = infinity
+    for current_point from index + 1 to final_point:
+        if valid_arch(index, current_point):
+            cost = total_cost(index, i, buffer)
+            minimum = min(minimum, cost_points)
+    return minimum
+
+def total_cost(first_point, second_point, buffer):
+# returns cost support first point + cost arch between first point 
+    and second point + cost_second_point (if exists in buffer, 
+    if not cost support second point)
     
-\end{python}
+\end{verbatim}
 
 \section{Problemes al realitzar la pràctica}
 \subsection{Nombres en \cpluspluslogo}
@@ -596,17 +625,29 @@ Primerament es va pensar i elaborar l'algorisme en el llenguatge de programació
 \begin{enumerate}
 \item Al arxiu Makefile del projecte de python, s'ha afegit una opció per a fer test del codi mitjançant l'eina pylint, però habilitant l'opció d'ignorar els ``warnings" provocats per no tindre
     comentaris per cadascún dels métodes i clases.
-\item S'han mogut tots els tests a un directori anomenat \textit{test}, ja que com s'ha fet la pràctica en python y \cpluspluslogo  si no es separava s'havia de tindre els mateixos tests repetits en dos carpetes diferents.
-\item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo porti habilitades les opcions d'optimització O3, ja que sinò el rendiment baixava considerablement.
-\item El codi no inclou anàlisi d'errors sobre el fitxer que se li proporciona. En cas de que el format/fitxer sigui erroni, es veurà l'excepció corresponent 
-    de python o \cpluspluslogo.
-\item Tot i que s'ha augmentat la pila d'execució en el codi recursiu de python, recordem que la pila no és infinita i per tant en cas d'una N molt gran el programa llançarà un error de recursivitat.
-\item Al programari de python s'ha emprat el patró de disseny \textit{template}, per tal de que el codi de les classes \textit{Point}, \textit{Circumference} i el \textit{parser} del fitxer no estigués repetit en 6 fitxers diferents. El fet de que python s'hagi de situar a un altre directori (anomenat \textit{common}) per poder importar els fitxers ha ocasionat afegir linees de codi que amb ulls de l'eïna pylint eren poc correctes. Aquestes s'han evitat afegint els comentaris:
+\item Al programari de python s'ha emprat el patró de disseny \textit{template}, per tal de que el codi de les classes \textit{Point}, \textit{Circumference} i el \textit{parser} del fitxer no estigués repetit en 6 arxius \textit{.py} diferents. El fet de que python s'hagi de situar a un altre directori (anomenat \textit{common}) per poder importar els fitxers ha ocasionat afegir linees de codi que amb ulls de l'eïna pylint eren poc correctes. Aquestes s'han evitat afegint els comentaris:
     \begin{verbatim}
     # pylint: disable=wrong-import-position
     # pylint: disable=import-error
     \end{verbatim}
     per tal de poder obtenir bona puntuació a l'evaluació.
+\item S'han mogut tots els tests a un directori anomenat \textit{test}, ja que com s'ha fet la pràctica en python y \cpluspluslogo  si no es separava s'havia de tindre els mateixos tests repetits en dos carpetes diferents.
+\item S'ha decidit que el binari resultant del codi escrit en \cpluspluslogo porti habilitades les opcions d'optimització O3, ja que sinò el rendiment baixava considerablement.
+\item El codi no inclou anàlisi d'errors sobre el fitxer que se li proporciona. En cas de que el format/fitxer sigui erroni, es veurà l'excepció corresponent 
+    de python o \cpluspluslogo.
+\item Tot i que s'ha augmentat la pila d'execució en el codi recursiu de python, recordem que la pila no és infinita i per tant en cas d'una N molt gran el programa llançarà un error de recursivitat.
+\item L'algorisme iteratiu de backtracking s'ha implementat amb la tècnica apresa a la tercera pràctica de l'assignatura d'Estructura de Dades del quatrimestre passat, per tant, és probable que 
+    alguns companys que també hagin cursat l'assignatura tinguin la solució similar ja que s'ha emprat la mateixa tècnica.
+\item S'ha decidit mantindre els fitxers de python en format \textit{.py}, ja que així es podien emprar altres intérprets de python més fàcilment modificant el Makefile del projecte. En cas de que l'avaluador volgués l'execució com es mostra 
+    en l'enunciat (\textit{\$./aqueducte <fitxer entrada>}), s'hauria d'afegir la \textit{shebang} al fitxer de python i a més cambiar el nom del arxiu:
+    \begin{verbatim}
+    Al principi del arxiu .py
+    #!/usr/bin/env python3
+    Modificar el nom del arxiu:
+    mv aqueducte.py aqueducte
+    En cas del recursiu:
+    mv aqueducte_recursive.py aqueducte_recursive
+    \end{verbatim}
 \end{enumerate}
 
 \section{Conclusions}
@@ -614,11 +655,11 @@ Aquesta pràctica m'ha servit per adquirir els següents coneixements:
 \begin{itemize}
     \item Comprendre i implementar un algorisme mitjançant backtracking.
     \item Comprendre i implementar un algorisme mitjançant greedy.
-    \item Aprendre les bases de la programació funcional i veure quina millora afegíen en aquest algorisme.
+    \item Aprendre les bases de la programació dinàmica i veure quina millora afegíen en aquest algorisme.
     \item Iniciarme en la programació en \cpluspluslogo.
     \item Analitzar els diferents costs (empírics i teòrics) d'un algorisme.
     \item Convertir un algorisme iteratiu a recursiu.
-    \item Crear un informe a partir de {\LaTeX} per a poder afegir fórmules lògiques i matemàtiques.
+    \item Crear un informe a partir de {\LaTeX} per a poder afegir fòrmules lògiques i matemàtiques.
 \end{itemize}
 
 \newpage
