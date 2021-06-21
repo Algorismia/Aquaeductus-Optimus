@@ -11,6 +11,8 @@ The better solution for this problem is the dynamic programming one, which is ba
 
 If you would like to know more about how it works, I would totally recommend reading the report of this assignment, which is found in documentation/informe.pdf. 
 
+The repository can be found on: https://github.com/Algorismia/Aquaeductus-Optimus
+
 ## Project structure 📁:
 
 ``` 
