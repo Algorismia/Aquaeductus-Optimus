@@ -49,8 +49,7 @@ class LandAlgorithm(Land):
                         return_ = math.inf
             else:
                 current.next_index += 1
-                if current.actual_min + return_ < current.min_cost:
-                    current.min_cost = current.actual_min + return_
+                current.min_cost = min(current.actual_min + return_, current.min_cost)
                 if current.next_index == self.num_points:
                     return_ = current.min_cost
                 else:
