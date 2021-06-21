@@ -97,20 +97,38 @@ Un exemple per anar d'un punt $a$ a un punt $d$ seguint l'algorisme greedy, podr
 
 \subsection{Cost algorisme}
 \subsubsection{Iteratiu}
-Veiem que el programa té 3 bucles anidats on cadascun té un pitjor cas amb cost de $O(n)$, i que en el pitjor dels casos haurem recorregut $n^3$ vegades.
+Veiem que el programa té 3 bucles anidats\footnote{1 bucle per a recòrrer tots els punts, 1 bucle per agafar el punt de mínim cost entre un punt i el final i 1 bucle per comprovar si el arc és vàlid}
+on cadascun té un pitjor cas amb cost de $O(n)$, i que en el pitjor dels casos haurem recorregut $n^3$ vegades.
 Per tant, podem dir que el cost de l'algorisme en forma iterativa és de $O(n^{3})$.
+
 
 \subsubsection{Recursiu}
 Òbviament, si l'únic que hem fet ha sigut passar l'algorisme iteratiu a recursiu (o a l'inversa), el cost d'aquest continuarà sent el mateix. L'únic que canviarà serà que ara s'utilitzarà memòria de la pila d'execució i no memòria de heap, per tant el programa es més propens a sofrir un \textit{stackoverflow}. Finalment podem dir que el cost és de $O(n^{3})$.
 
 \subsubsection{Empíric}
 Un cop executat varies vegades l'algorisme amb un conjunt de $n$ diferents, ens crea la gràfica de la figura \ref{fig:greedy-benchmark}. Aquesta, concorda amb la justificació de la notació assimptòtica donada anteriorment.
-\begin{figure}[h!]
-    \includegraphics[max size={\textwidth}{\textheight}]{greedy-benchmark}
+\begin{figure}[!hbtp]
+    \includegraphics[max size={\textwidth}{\textheight*1/3}]{greedy-benchmark}
     \centering
     \caption{Cost empíric emprant Greedy en Python}
     \label{fig:greedy-benchmark}
 \end{figure}
+
+\subsection{Pseudo-codi de l'algorisme}
+\begin{python}
+def get_minimum_aqueduct():
+    current_point = 0
+    accumulator = cost_support(current_point)
+    while current_point != final_point:
+        cost, current_point = get_minimum_arch(current_point)
+        if cost == infinity:
+            return infinity
+        accumulator = accumulator + cost
+    return accumulator
+
+def get_minimum_arch(current_point):
+    # returns the minimum cost (and the point who achieves it) from current_point
+\end{python}
 
 \newpage
     
@@ -189,6 +207,22 @@ Finalment, s'ha executat múltiples vegades el algorisme i s'ha aconseguit forma
     \label{fig:backtracking-benchmark}
 \end{figure}
 
+\subsection{Pseudo-codi de l'algorisme}
+\begin{python}
+def get_minimum_aqueduct(current_point_index=0):
+    # base case
+    if current_point_index == final_point_of_aqueduct:
+        return cost_support(current_point_index)
+    # backtrack
+        min_cost = infinity
+        for analized_point from current_point_index + 1 to final_point_index:
+            if valid_arch(current_point_index, analized_point):
+                cost_of_analized = self.get_minimum_aqueduct(i)
+                cost_of_analized += cost_support(current_point_index)
+                cost_of_analized += cost_arch(current_point_index, analized_point)
+                min_cost = min(min_cost, cost_of_analized)
+        return min_cost
+\end{python}
 \newpage
 
 % dynamic
@@ -538,36 +572,20 @@ amb \cpluspluslogo (figura \ref{fig:cpp-dynamic-benchmarks}), si que es van pode
 
 Igualment, es pot apreciar que les dos gràfiques surten similar a una funció $O(n^{3})$.
 
-\subsection{Pseudocodi algorisme iteratiu}
+\subsection{Pseudocodi algorisme}
 \label{pseudocodiiteratiu}
 El codi iteratiu segueix l'algorisme explicat a la secció \ref{optimal-explanation}. Recalcar que la llista que guarda els resultats és utilitzada dintre de la funció \textit{get\_minimum\_cost\_for\_index} per a no haver 
 de tornar a calcular valors mínims de punts que ja havíem resolt anteriorment.
 
 \begin{python}
-def get_minimum_aqueduct(self):
+def get_minimum_aqueduct():
     for i in range(self.num_points - 2, -1, -1):
         minimum_of_this_point = self.get_minimum_cost_for_index(i)
         self.point_values_buffer[i] = minimum_of_this_point
     return self.point_values_buffer[0]
-\end{python}
 
-\subsection{Pseudocodi algorisme recursiu}
-El codi recursiu és molt similar al iteratiu. De fet, l'únic que s'ha fet és pensar el cas base (quan el índex és 0) i a partir d'allí anar movent-se per tots els punts augmentant el sufix de l'array mentres que disminueix el prefix fins arribar al cas 
-base (índex 0, on el sufix és tota l'array mentres que el prefix és inexistent).
-
-Igualment, per a mantindre la concordança de codi amb la versió iterativa, s'ha decidit fer una funció que serveix de \textit{wrapper} per a amagar que realment estem cridant a una solució recursiva.
-\label{pseudocodirecursiu}
-\begin{python}
-def get_minimum_aqueduct_recursive(self, index: int):
-    if index == 0:
-        minimum_of_this_point = self.get_minimum_cost_for_index(index)
-        return minimum_of_this_point
-    self.point_values_buffer[index] = self.get_minimum_cost_for_index(index)
-    return self.get_minimum_aqueduct_recursive(index - 1)
-
-# wrapper for recursive function
-def get_minimum_aqueduct(self):
-    return self.get_minimum_aqueduct_recursive(self.num_points - 2)
+def get_minimum_cost_for_index(index):
+    
 \end{python}
 
 \section{Problemes al realitzar la pràctica}
