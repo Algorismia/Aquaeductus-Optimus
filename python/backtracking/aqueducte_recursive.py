@@ -23,8 +23,7 @@ class LandAlgorithm(Land):
                 cost_previous = self.get_minimum_aqueduct(i)
                 cost_previous += self.cost_support(self.points[current_point_index])
                 cost_previous += self.cost_arch(self.points[current_point_index], self.points[i])
-                if cost_previous < min_cost:
-                    min_cost = cost_previous
+                min_cost = min(cost_previous, min_cost)
         return min_cost
 
 
